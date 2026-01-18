@@ -1,20 +1,3 @@
-"""
-Plot results for Model 1 (Backpropagation)
-
-Reads:
-- results/results.json
-- results/history.json
-
-Writes:
-- results/figures/learning_curves_loss.png
-- results/figures/learning_curves_accuracy.png
-- results/figures/confusion_matrix.png
-
-Docs:
-- Matplotlib: https://matplotlib.org/stable/index.html
-- scikit-learn confusion_matrix: https://scikit-learn.org/stable/modules/generated/sklearn.metrics.confusion_matrix.html
-"""
-
 from __future__ import annotations
 
 import json
@@ -37,7 +20,6 @@ def main() -> None:
     results = json.loads(results_path.read_text(encoding="utf-8"))
     history = json.loads(history_path.read_text(encoding="utf-8"))
 
-    # Loss curves
     plt.figure()
     plt.plot(history["train_loss"], label="train")
     plt.plot(history["val_loss"], label="validation")
@@ -49,7 +31,6 @@ def main() -> None:
     plt.savefig(fig_dir / "learning_curves_loss.png", dpi=200)
     plt.close()
 
-    # Accuracy curves
     plt.figure()
     plt.plot(history["train_acc"], label="train")
     plt.plot(history["val_acc"], label="validation")
@@ -61,7 +42,6 @@ def main() -> None:
     plt.savefig(fig_dir / "learning_curves_accuracy.png", dpi=200)
     plt.close()
 
-    # Confusion matrix plot
     cm = np.array(results["metrics"]["test"]["confusion_matrix"], dtype=int)
     plt.figure()
     plt.imshow(cm, interpolation="nearest")

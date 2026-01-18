@@ -1,22 +1,3 @@
-"""
-Model 1: Backpropagation (NumPy) on WDBC dataset
-
-This script:
-- Loads Breast Cancer Wisconsin (Diagnostic) dataset via scikit-learn
-- Splits into train/validation/test
-- Standardizes features using StandardScaler (fit on train only)
-- Trains a small 1-hidden-layer MLP using backpropagation implemented in NumPy
-- Saves training history and evaluation metrics to JSON files
-
-References (free access / docs):
-- Rumelhart, Hinton, Williams (1986) backprop paper (free PDF): https://www.iro.umontreal.ca/~vincentp/ift3395/lectures/backprop_old.pdf
-- Nielsen, Neural Networks and Deep Learning (free online): https://neuralnetworksanddeeplearning.com/
-- scikit-learn WDBC loader: https://scikit-learn.org/stable/modules/generated/sklearn.datasets.load_breast_cancer.html
-- train_test_split: https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.train_test_split.html
-- StandardScaler: https://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.StandardScaler.html
-- metrics: https://scikit-learn.org/stable/modules/model_evaluation.html
-"""
-
 from __future__ import annotations
 
 import json
@@ -68,13 +49,7 @@ class HyperParams:
 
 
 def forward(X: np.ndarray, W1: np.ndarray, b1: np.ndarray, W2: np.ndarray, b2: np.ndarray) -> Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
-    """
-    Forward pass for 1-hidden-layer MLP:
-    Z1 = XW1 + b1
-    A1 = ReLU(Z1)
-    Z2 = A1W2 + b2
-    A2 = sigmoid(Z2)  (probability for class 1)
-    """
+   
     Z1 = X @ W1 + b1
     A1 = relu(Z1)
     Z2 = A1 @ W2 + b2
@@ -86,7 +61,6 @@ def train_model(X_train: np.ndarray, y_train: np.ndarray, X_val: np.ndarray, y_v
     rng = np.random.default_rng(hp.seed)
     n_in = X_train.shape[1]
 
-    # He-like init for ReLU hidden layer, small init for output
     W1 = rng.normal(0.0, np.sqrt(2.0 / n_in), size=(n_in, hp.hidden_units))
     b1 = np.zeros((1, hp.hidden_units), dtype=float)
     W2 = rng.normal(0.0, 0.01, size=(hp.hidden_units, 1))
@@ -96,11 +70,9 @@ def train_model(X_train: np.ndarray, y_train: np.ndarray, X_val: np.ndarray, y_v
 
     start = time.time()
     for epoch in range(1, hp.epochs + 1):
-        # Forward
         Z1, A1, Z2, y_hat = forward(X_train, W1, b1, W2, b2)
         train_loss = binary_cross_entropy(y_train, y_hat)
 
-        # Backward (BCE + sigmoid => dZ2 = y_hat - y)
         dZ2 = (y_hat - y_train)  # (n,1)
         dW2 = (A1.T @ dZ2) / X_train.shape[0]
         db2 = np.mean(dZ2, axis=0, keepdims=True)
@@ -110,13 +82,11 @@ def train_model(X_train: np.ndarray, y_train: np.ndarray, X_val: np.ndarray, y_v
         dW1 = (X_train.T @ dZ1) / X_train.shape[0]
         db1 = np.mean(dZ1, axis=0, keepdims=True)
 
-        # Update
         W2 -= hp.learning_rate * dW2
         b2 -= hp.learning_rate * db2
         W1 -= hp.learning_rate * dW1
         b1 -= hp.learning_rate * db1
 
-        # Metrics (train/val)
         y_pred_train = (y_hat >= hp.threshold).astype(int)
         train_acc = float(accuracy_score(y_train, y_pred_train))
 
@@ -147,7 +117,6 @@ def evaluate(X: np.ndarray, y: np.ndarray, model: Dict, threshold: float = 0.50)
         "confusion_matrix": confusion_matrix(y, y_pred).tolist(),
     }
 
-    # AUC needs probabilities
     try:
         out["roc_auc"] = float(roc_auc_score(y, y_hat))
     except Exception:
@@ -159,12 +128,10 @@ def evaluate(X: np.ndarray, y: np.ndarray, model: Dict, threshold: float = 0.50)
 def main() -> None:
     hp = HyperParams()
 
-    # Load dataset
     data = load_breast_cancer()
     X = data.data.astype(float)
     y = data.target.astype(int).reshape(-1, 1)
 
-    # Split into train and temp, then temp into val and test
     X_train, X_tmp, y_train, y_tmp = train_test_split(
         X,
         y,
@@ -180,21 +147,18 @@ def main() -> None:
         stratify=y_tmp,
     )
 
-    # Scale
     scaler = StandardScaler()
     X_train = scaler.fit_transform(X_train)
     X_val = scaler.transform(X_val)
     X_test = scaler.transform(X_test)
 
-    # Train
+    
     trained = train_model(X_train, y_train, X_val, y_val, hp)
 
-    # Evaluate
     train_metrics = evaluate(X_train, y_train, trained["model"], threshold=hp.threshold)
     val_metrics = evaluate(X_val, y_val, trained["model"], threshold=hp.threshold)
     test_metrics = evaluate(X_test, y_test, trained["model"], threshold=hp.threshold)
 
-    # Save outputs
     out_dir = Path(__file__).resolve().parent / "results"
     out_dir.mkdir(parents=True, exist_ok=True)
 
