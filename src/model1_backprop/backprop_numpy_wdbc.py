@@ -73,7 +73,7 @@ def train_model(X_train: np.ndarray, y_train: np.ndarray, X_val: np.ndarray, y_v
         Z1, A1, Z2, y_hat = forward(X_train, W1, b1, W2, b2)
         train_loss = binary_cross_entropy(y_train, y_hat)
 
-        dZ2 = (y_hat - y_train)  # (n,1)
+        dZ2 = (y_hat - y_train)  
         dW2 = (A1.T @ dZ2) / X_train.shape[0]
         db2 = np.mean(dZ2, axis=0, keepdims=True)
 

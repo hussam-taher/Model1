@@ -1,0 +1,69 @@
+{
+  "hyperparameters": {
+    "hidden_units": 32,
+    "learning_rate": 0.01,
+    "epochs": 300,
+    "seed": 42,
+    "threshold": 0.5
+  },
+  "split": {
+    "train_size": 398,
+    "val_size": 85,
+    "test_size": 86,
+    "stratified": true
+  },
+  "training_time_sec": 0.669654130935669,
+  "metrics": {
+    "train": {
+      "accuracy": 0.9547738693467337,
+      "precision": 0.9461538461538461,
+      "recall": 0.984,
+      "f1": 0.9647058823529412,
+      "confusion_matrix": [
+        [
+          134,
+          14
+        ],
+        [
+          4,
+          246
+        ]
+      ],
+      "roc_auc": 0.991054054054054
+    },
+    "validation": {
+      "accuracy": 0.9647058823529412,
+      "precision": 0.9629629629629629,
+      "recall": 0.9811320754716981,
+      "f1": 0.9719626168224299,
+      "confusion_matrix": [
+        [
+          30,
+          2
+        ],
+        [
+          1,
+          52
+        ]
+      ],
+      "roc_auc": 0.9982311320754718
+    },
+    "test": {
+      "accuracy": 0.9534883720930233,
+      "precision": 0.9464285714285714,
+      "recall": 0.9814814814814815,
+      "f1": 0.9636363636363636,
+      "confusion_matrix": [
+        [
+          29,
+          3
+        ],
+        [
+          1,
+          53
+        ]
+      ],
+      "roc_auc": 0.9947916666666667
+    }
+  }
+}
