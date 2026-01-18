@@ -1,0 +1,10 @@
+[1] UCI Machine Learning Repository, “Breast Cancer Wisconsin (Diagnostic) Dataset.” https://archive.ics.uci.edu/dataset/17/breast+cancer+wisconsin+diagnostic
+[2] scikit-learn Developers, “load_breast_cancer.” https://scikit-learn.org/stable/modules/generated/sklearn.datasets.load_breast_cancer.html
+[3] D. E. Rumelhart, G. E. Hinton, and R. J. Williams, “Learning representations by back-propagating errors,” 1986. Free PDF: https://www.iro.umontreal.ca/~vincentp/ift3395/lectures/backprop_old.pdf
+[4] M. Nielsen, “Neural Networks and Deep Learning,” (free online book). https://neuralnetworksanddeeplearning.com/
+[5] I. Goodfellow, Y. Bengio, and A. Courville, “Deep Learning,” MIT Press, 2016 (free online). https://www.deeplearningbook.org/
+[6] scikit-learn Developers, “train_test_split.” https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.train_test_split.html
+[7] scikit-learn Developers, “StandardScaler.” https://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.StandardScaler.html
+[8] scikit-learn Developers, “Model evaluation: metrics and scoring.” https://scikit-learn.org/stable/modules/model_evaluation.html
+[9] NumPy Developers, “NumPy Documentation.” https://numpy.org/doc/
+[10] Matplotlib Developers, “Matplotlib Documentation.” https://matplotlib.org/stable/index.html
