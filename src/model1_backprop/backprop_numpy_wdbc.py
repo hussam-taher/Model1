@@ -44,7 +44,7 @@ class HyperParams:
     epochs: int = 300
     seed: int = 42
     test_size: float = 0.30
-    val_fraction_of_tmp: float = 0.50  # split tmp into val/test equally
+    val_fraction_of_tmp: float = 0.50  
     threshold: float = 0.50
 
 
